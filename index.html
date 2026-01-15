@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Equipe GARRA v4.2 - Sistema de Gestão de Vendas</title>
+    
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Navy Blue Clean Palette */
+            --bg-primary: #1E2139;
+            --bg-secondary: #2A2F47;
+            --bg-card: #2A2E4A;
+            --text-primary: #FFFFFF;
+            --text-secondary: #A8B2D1;
+            --border-color: #3E4567;
+            
+            /* Accent Colors */
+            --color-blue: #4A90E2;
+            --color-purple: #8B5CF6;
+            --color-green: #10B981;
+            --color-yellow: #F59E0B;
+            --color-orange: #FF6B35;
+            --color-red: #EF4444;
+            --color-cyan: #06B6D4;
+            
+            /* Metrocasa Vinho */
+            --color-vinho: #8B0000;
+            --color-dourado: #FFD700;
+            
+            /* 3D Effect */
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15),
+                         0 2px 4px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2),
+                         0 4px 8px rgba(0, 0, 0, 0.15),
+                         0 2px 4px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.25),
+                         0 8px 16px rgba(0, 0, 0, 0.2),
+                         0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Header Compacto */
+        header {
+            background: var(--bg-card);
+            border-bottom: 2px solid var(--color-vinho);
+            box-shadow: var(--shadow-md);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 60px;
+        }
+
+        .header-content {
+            max-width: 1920px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            animation: logoAppear 0.8s ease-out;
+        }
+
+        @keyframes logoAppear {
+            0% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .header-title {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .header-title h1 {
+            font-size: 20px;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--color-dourado) 0%, #FFA500 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-title p {
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-tab {
+            padding: 8px 16px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-tab:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(135deg, var(--color-dourado) 0%, #FFA500 100%);
+            color: var(--bg-primary);
+            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+        }
+
+        /* Date Filter */
+        .date-filter {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .date-filter input {
+            padding: 8px 12px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 13px;
+            width: 220px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .date-filter input:hover {
+            border-color: var(--color-blue);
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+        }
+
+        /* Main Layout */
+        .main-container {
+            max-width: 1920px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+            height: calc(100vh - 80px);
+            overflow: hidden;
+        }
+
+        /* Content Area (Esquerda + Centro) */
+        .content-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        /* Scrollbar Customizado */
+        .content-area::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .content-area::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+            border-radius: 4px;
+        }
+
+        .content-area::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        .content-area::-webkit-scrollbar-thumb:hover {
+            background: var(--color-blue);
+        }
+
+        /* KPIs Section */
+        .kpis-section {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .kpi-group {
+            display: grid;
+            gap: 12px;
+        }
+
+        .kpi-group.group-1 {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .kpi-group.group-2 {
+            grid-template-columns: repeat(4, 1fr);
+        }
+
+        .kpi-group.group-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .kpi-card {
+            background: var(--bg-card);
+            padding: 16px;
+            border-radius: 12px;
+            border-top: 3px solid;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .kpi-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .kpi-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .kpi-card:hover::before {
+            left: 100%;
+        }
+
+        .kpi-card.blue { border-top-color: var(--color-blue); }
+        .kpi-card.purple { border-top-color: var(--color-purple); }
+        .kpi-card.green { border-top-color: var(--color-green); }
+        .kpi-card.yellow { border-top-color: var(--color-yellow); }
+        .kpi-card.orange { border-top-color: var(--color-orange); }
+        .kpi-card.red { border-top-color: var(--color-red); }
+        .kpi-card.cyan { border-top-color: var(--color-cyan); }
+        .kpi-card.vinho { border-top-color: var(--color-vinho); }
+        .kpi-card.dourado { border-top-color: var(--color-dourado); }
+
+        .kpi-card.highlight {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 165, 0, 0.05) 100%);
+            border: 2px solid var(--color-dourado);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 0 8px rgba(255, 215, 0, 0);
+            }
+        }
+
+        .kpi-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+
+        .kpi-icon {
+            font-size: 20px;
+        }
+
+        .kpi-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .kpi-value {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .kpi-subtitle {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+
+        /* Rankings Section */
+        .rankings-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .ranking-card {
+            background: var(--bg-card);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .ranking-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--color-dourado);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .ranking-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px;
+            margin-bottom: 8px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .ranking-item:hover {
+            transform: translateX(4px);
+            background: rgba(74, 144, 226, 0.1);
+        }
+
+        .ranking-position {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            min-width: 30px;
+        }
+
+        .ranking-info {
+            flex: 1;
+            margin-left: 12px;
+        }
+
+        .ranking-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .ranking-metrics {
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .ranking-score {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .ranking-ray {
+            width: 30px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--color-blue), transparent);
+            animation: rayPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes rayPulse {
+            0%, 100% {
+                opacity: 0.5;
+                transform: scaleX(0.8);
+            }
+            50% {
+                opacity: 1;
+                transform: scaleX(1);
+            }
+        }
+
+        /* Top 3 Badges */
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-gold {
+            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+            color: #000;
+            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
+        }
+
+        .badge-silver {
+            background: linear-gradient(135deg, #C0C0C0 0%, #A8A8A8 100%);
+            color: #000;
+            box-shadow: 0 2px 8px rgba(192, 192, 192, 0.4);
+        }
+
+        .badge-bronze {
+            background: linear-gradient(135deg, #CD7F32 0%, #B87333 100%);
+            color: #FFF;
+            box-shadow: 0 2px 8px rgba(205, 127, 50, 0.4);
+        }
+
+        /* Sidebar Direita */
+        .sidebar-right {
+            width: 280px;
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--shadow-lg);
+            position: sticky;
+            top: 80px;
+            height: calc(100vh - 100px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-title {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--color-dourado);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar-ranking {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .sidebar-ranking::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar-ranking::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+            border-radius: 3px;
+        }
+
+        .sidebar-ranking::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 3px;
+        }
+
+        .sidebar-ranking::-webkit-scrollbar-thumb:hover {
+            background: var(--color-blue);
+        }
+
+        .sidebar-item {
+            padding: 10px;
+            margin-bottom: 8px;
+            background: var(--bg-secondary);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-item:hover {
+            background: rgba(74, 144, 226, 0.1);
+        }
+
+        .sidebar-item-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .sidebar-item-position {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-secondary);
+        }
+
+        .sidebar-item-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .sidebar-item-score {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--color-blue);
+        }
+
+        .sidebar-item-metrics {
+            font-size: 10px;
+            color: var(--text-secondary);
+        }
+
+        /* Responsive */
+        @media (max-width: 1400px) {
+            .main-container {
+                flex-direction: column;
+                height: auto;
+                overflow-y: auto;
+            }
+
+            .sidebar-right {
+                width: 100%;
+                position: static;
+                height: auto;
+                max-height: 500px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-wrap: wrap;
+                height: auto;
+                padding: 10px;
+            }
+
+            .logo-section {
+                width: 100%;
+                justify-content: center;
+                margin-bottom: 10px;
+            }
+
+            .nav-tabs {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+
+            .date-filter {
+                width: 100%;
+                justify-content: center;
+                margin-top: 10px;
+            }
+
+            .kpi-group.group-1,
+            .kpi-group.group-2,
+            .kpi-group.group-3 {
+                grid-template-columns: 1fr;
+            }
+
+            .rankings-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo-section">
+                <img src="https://www.genspark.ai/api/files/s/QORAK1K0?cache_control=3600" alt="Logo Time GARRA" class="logo">
+                <div class="header-title">
+                    <h1>Dashboard Equipe GARRA</h1>
+                    <p>Sistema de Gestão de Vendas - Metrocasa</p>
+                </div>
+            </div>
+
+            <nav class="nav-tabs">
+                <button class="nav-tab active" onclick="navigateTo('geral')">Geral</button>
+                <button class="nav-tab" onclick="navigateTo('superintendentes')">Superintendentes</button>
+                <button class="nav-tab" onclick="navigateTo('gerentes')">Gerentes</button>
+                <button class="nav-tab" onclick="navigateTo('corretores')">Corretores</button>
+                <button class="nav-tab" onclick="navigateTo('comparativo')">Comparativo</button>
+            </nav>
+
+            <div class="date-filter">
+                <input type="text" id="datePicker" placeholder="Selecione o período">
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Content Area (Esquerda + Centro) -->
+        <div class="content-area">
+            <!-- KPIs Section -->
+            <div class="kpis-section">
+                <!-- Grupo 1: Equipe + Entrevistas -->
+                <div class="kpi-group group-1">
+                    <div class="kpi-card blue">
+                        <div class="kpi-header">
+                            <span class="kpi-icon">👥</span>
+                            <span class="kpi-label">Equipe Total</span>
+                        </div>
+                        <div class="kpi-value">158</div>
+                        <div class="kpi-subtitle">4 Sup • 12 Ger • 142 Cor</div>
+                    </div>
+
+                    <div class="kpi-card purple">
+                        <div class="kpi-header">
+                            <span class="kpi-icon">📋</span>
+                            <span class="kpi-label">Entrevistas</span>
+                        </div>
+                        <div class="kpi-value">28</div>
+                        <div class="kpi-subtitle">22 realizadas • +15% vs. mês anterior</div>
+                    </div>
+                </div>
+
+                <!-- Grupo 2: Funil Leads → Visitas -->
+                <div class="kpi-group group-2">
+                    <div class="kpi-card green">
+                        <div class="kpi-header">
+                            <span class="kpi-icon">🎯</span>
+                            <span class="kpi-label">Leads Novos</span>
+                        </div>
+                        <div class="kpi-value">1.245</div>
+                        <div class="kpi-subtitle">Novos contatos captados</div>
+                    </div>
+
+                    <div class="kpi-card yellow">
+                        <div class="kpi-header">
+                            <span class="kpi-icon">📅</span>
+                            <span class="kpi-label">Agendamentos</span>
+                        </div>
+                        <div class="kpi-value">856</div>
+                        <div class="kpi-subtitle">68.7% dos leads converteram</div>
+                    </div>
+
+                    <div class="kpi-card highlight dourado">
+                        <div class="kpi-header">
+                            <span class="kpi-icon">📊</span>
+                            <span class="kpi-label">Para vir 1 Visita</span>
+                        </div>
+                        <div class="kpi-value">1.6</div>
+                        <div class="kpi-subtitle">Agendamentos necessários</div>
+                    </div>
+
+                    <div class="kpi-card orange">
+                        <div class="kpi-header">
+                            <span class="kpi-icon">🏠</span>
+                            <span class="kpi-label">Visitas</span>
+                        </div>
+                        <div class="kpi-value">542</div>
+                        <div class="kpi-subtitle">63.3% dos agendados vieram</div>
+                    </div>
+                </div>
+
+                <!-- Grupo 3: Conversão & Vendas -->
+                <div class="kpi-group group-3">
+                    <div class="kpi-card highlight vinho">
+                        <div class="kpi-header">
+                            <span class="kpi-icon">📈</span>
+                            <span class="kpi-label">Para 1 Pré-Venda</span>
+                        </div>
+                        <div class="kpi-value">6.1</div>
+                        <div class="kpi-subtitle">Visitas necessárias</div>
+                    </div>
+
+                    <div class="kpi-card red">
+                        <div class="kpi-header">
+                            <span class="kpi-icon">💎</span>
+                            <span class="kpi-label">Pré-Vendas</span>
+                        </div>
+                        <div class="kpi-value">89</div>
+                        <div class="kpi-subtitle">16.4% das visitas converteram</div>
+                    </div>
+
+                    <div class="kpi-card cyan">
+                        <div class="kpi-header">
+                            <span class="kpi-icon">📝</span>
+                            <span class="kpi-label">Propostas</span>
+                        </div>
+                        <div class="kpi-value">67</div>
+                        <div class="kpi-subtitle">75.3% das pré-vendas fecharam</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Rankings Grid (2 colunas) -->
+            <div class="rankings-grid">
+                <!-- Ranking Superintendentes -->
+                <div class="ranking-card">
+                    <h3 class="ranking-title">🏆 Superintendentes</h3>
+                    <div id="rankingSuperintendentes"></div>
+                </div>
+
+                <!-- Ranking Gerentes -->
+                <div class="ranking-card">
+                    <h3 class="ranking-title">🥇 Top 5 Gerentes</h3>
+                    <div id="rankingGerentes"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Direita: Ranking Corretores TOP 10 -->
+        <aside class="sidebar-right">
+            <h3 class="sidebar-title">🌟 Top 10 Corretores</h3>
+            <div class="sidebar-ranking" id="rankingCorretores"></div>
+        </aside>
+    </div>
+
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
+
+    <script>
+        console.log('🏆 Dashboard Equipe GARRA v4.2 iniciado');
+
+        // Configurar Flatpickr
+        flatpickr("#datePicker", {
+            mode: "range",
+            dateFormat: "d/m/Y",
+            locale: "pt",
+            defaultDate: [
+                new Date(new Date().setDate(new Date().getDate() - 30)),
+                new Date()
+            ],
+            onChange: function(selectedDates, dateStr, instance) {
+                console.log('📅 Período selecionado:', dateStr);
+            }
+        });
+
+        // Dados fictícios estruturados
+        const DADOS = {
+            superintendentes: [
+                { nome: 'ARTHUR', leads: 450, agend: 280, visitas: 180, pre: 45, prop: 30 },
+                { nome: 'VERONICA', leads: 380, agend: 250, visitas: 160, pre: 38, prop: 25 },
+                { nome: 'FELIX', leads: 320, agend: 210, visitas: 140, pre: 32, prop: 20 },
+                { nome: 'BERNARDO', leads: 290, agend: 190, visitas: 120, pre: 28, prop: 18 }
+            ],
+            gerentes: [
+                { nome: 'PEDRO COSTA', leads: 180, agend: 120, visitas: 80, pre: 20, prop: 15 },
+                { nome: 'ANA SILVA', leads: 165, agend: 110, visitas: 75, pre: 18, prop: 13 },
+                { nome: 'CARLOS MENDES', leads: 150, agend: 100, visitas: 70, pre: 16, prop: 12 },
+                { nome: 'MARIA SANTOS', leads: 145, agend: 95, visitas: 68, pre: 15, prop: 11 },
+                { nome: 'JOÃO OLIVEIRA', leads: 140, agend: 90, visitas: 65, pre: 14, prop: 10 }
+            ],
+            corretores: []
+        };
+
+        // Gerar 142 corretores dinamicamente
+        const nomesPrimeiros = ['João', 'Maria', 'Pedro', 'Ana', 'Carlos', 'Julia', 'Lucas', 'Paula', 'Rafael', 'Fernanda', 
+                                'Bruno', 'Camila', 'Diego', 'Isabela', 'Gustavo', 'Letícia', 'Felipe', 'Mariana', 'Thiago', 'Amanda'];
+        const nomesSegundos = ['Silva', 'Santos', 'Costa', 'Oliveira', 'Souza', 'Lima', 'Pereira', 'Ferreira', 'Rodrigues', 'Alves',
+                               'Nascimento', 'Carvalho', 'Araújo', 'Ribeiro', 'Martins', 'Rocha', 'Dias', 'Castro', 'Gomes', 'Barbosa'];
+
+        for (let i = 0; i < 142; i++) {
+            const primeiro = nomesPrimeiros[Math.floor(Math.random() * nomesPrimeiros.length)];
+            const segundo = nomesSegundos[Math.floor(Math.random() * nomesSegundos.length)];
+            
+            DADOS.corretores.push({
+                nome: `${primeiro} ${segundo}`,
+                leads: Math.floor(Math.random() * 40) + 20,
+                agend: Math.floor(Math.random() * 30) + 15,
+                visitas: Math.floor(Math.random() * 25) + 10,
+                pre: Math.floor(Math.random() * 8) + 2,
+                prop: Math.floor(Math.random() * 5) + 1
+            });
+        }
+
+        // Função para calcular performance combinada
+        function calcularPerformance(agend, visitas) {
+            return (agend * 1) + (visitas * 2);
+        }
+
+        // Renderizar ranking com badges para TOP 3
+        function renderRanking(data, containerId) {
+            const container = document.getElementById(containerId);
+            
+            // Ordenar por performance
+            const sorted = [...data].sort((a, b) => {
+                const scoreA = calcularPerformance(a.agend, a.visitas);
+                const scoreB = calcularPerformance(b.agend, b.visitas);
+                return scoreB - scoreA;
+            });
+
+            container.innerHTML = sorted.map((item, index) => {
+                const score = calcularPerformance(item.agend, item.visitas);
+                const position = index + 1;
+                
+                let badge = '';
+                if (position === 1) badge = '<span class="badge badge-gold">🥇 1º</span>';
+                else if (position === 2) badge = '<span class="badge badge-silver">🥈 2º</span>';
+                else if (position === 3) badge = '<span class="badge badge-bronze">🥉 3º</span>';
+                else badge = `<span class="ranking-position">${position}º</span>`;
+
+                return `
+                    <div class="ranking-item">
+                        ${badge}
+                        <div class="ranking-info">
+                            <div class="ranking-name">${item.nome}</div>
+                            <div class="ranking-metrics">${item.leads} L | ${item.agend} A | ${item.visitas} V</div>
+                        </div>
+                        <div class="ranking-score">
+                            ${score}
+                            <div class="ranking-ray"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Renderizar sidebar de corretores TOP 10
+        function renderSidebarCorretores() {
+            const container = document.getElementById('rankingCorretores');
+            
+            const sorted = [...DADOS.corretores].sort((a, b) => {
+                const scoreA = calcularPerformance(a.agend, a.visitas);
+                const scoreB = calcularPerformance(b.agend, b.visitas);
+                return scoreB - scoreA;
+            }).slice(0, 10);
+
+            container.innerHTML = sorted.map((item, index) => {
+                const score = calcularPerformance(item.agend, item.visitas);
+                const position = index + 1;
+                
+                let badge = '';
+                if (position === 1) badge = '🥇';
+                else if (position === 2) badge = '🥈';
+                else if (position === 3) badge = '🥉';
+
+                return `
+                    <div class="sidebar-item">
+                        <div class="sidebar-item-header">
+                            <span class="sidebar-item-position">${badge} ${position}º</span>
+                            <span class="sidebar-item-score">${score}</span>
+                        </div>
+                        <div class="sidebar-item-name">${item.nome}</div>
+                        <div class="sidebar-item-metrics">${item.leads} L | ${item.agend} A | ${item.visitas} V</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Navegação entre páginas
+        function navigateTo(page) {
+            console.log('📄 Navegando para:', page);
+            
+            // Atualizar abas ativas
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Implementar navegação (placeholder)
+            alert(`Navegação para página "${page}" será implementada nas próximas fases.`);
+        }
+
+        // Inicializar
+        renderRanking(DADOS.superintendentes, 'rankingSuperintendentes');
+        renderRanking(DADOS.gerentes, 'rankingGerentes');
+        renderSidebarCorretores();
+
+        console.log('✅ Dashboard carregado com sucesso!');
+        console.log('📊 Total de corretores:', DADOS.corretores.length);
+    </script>
+</body>
+</html>
