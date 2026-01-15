@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     
     <style>
+        /* ========================================
+           RESET E VARIÁVEIS
+        ======================================== */
         * {
             margin: 0;
             padding: 0;
@@ -16,723 +19,669 @@
         }
 
         :root {
-            /* Navy Blue Clean Palette */
+            /* Backgrounds */
             --bg-primary: #1E2139;
-            --bg-secondary: #2A2F47;
-            --bg-card: #2A2E4A;
+            --bg-secondary: #252945;
+            --bg-card: #2A2F47;
+            
+            /* Acentos */
+            --accent-blue: #4A90E2;
+            --accent-purple: #8B5CF6;
+            --accent-coral: #FF6B6B;
+            --accent-green: #10B981;
+            --accent-yellow: #F59E0B;
+            --accent-orange: #FF8C42;
+            
+            /* Texto */
             --text-primary: #FFFFFF;
-            --text-secondary: #A8B2D1;
-            --border-color: #3E4567;
+            --text-secondary: #94A3B8;
+            --text-muted: #64748B;
             
-            /* Accent Colors */
-            --color-blue: #4A90E2;
-            --color-purple: #8B5CF6;
-            --color-green: #10B981;
-            --color-yellow: #F59E0B;
-            --color-orange: #FF6B35;
-            --color-red: #EF4444;
-            --color-cyan: #06B6D4;
+            /* Bordas */
+            --border-color: #3F4563;
             
-            /* Metrocasa Vinho */
-            --color-vinho: #8B0000;
-            --color-dourado: #FFD700;
-            
-            /* 3D Effect */
-            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15),
-                         0 2px 4px rgba(0, 0, 0, 0.1);
-            --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2),
-                         0 4px 8px rgba(0, 0, 0, 0.15),
-                         0 2px 4px rgba(0, 0, 0, 0.1);
-            --shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.25),
-                         0 8px 16px rgba(0, 0, 0, 0.2),
-                         0 4px 8px rgba(0, 0, 0, 0.15);
+            /* Sombras 3D */
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.25);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.35);
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg-primary);
             color: var(--text-primary);
-            min-height: 100vh;
-            overflow-x: hidden;
+            line-height: 1.6;
         }
 
-        /* Header Compacto */
-        header {
-            background: var(--bg-card);
-            border-bottom: 2px solid var(--color-vinho);
-            box-shadow: var(--shadow-md);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+        /* ========================================
+           HEADER
+        ======================================== */
+        .header {
             height: 60px;
-        }
-
-        .header-content {
-            max-width: 1920px;
-            margin: 0 auto;
-            padding: 0 20px;
+            background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
+            box-shadow: var(--shadow-md);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            height: 100%;
+            padding: 0 24px;
+            border-bottom: 1px solid var(--border-color);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
-        .logo-section {
+        .header-left {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 16px;
         }
 
-        .logo {
-            width: 50px;
+        .logo-animated {
             height: 50px;
-            object-fit: contain;
-            animation: logoAppear 0.8s ease-out;
+            width: auto;
+            animation: logoAppear 1s ease-out;
+            filter: drop-shadow(0 4px 12px rgba(255, 215, 0, 0.4));
+            transition: all 0.3s ease;
+        }
+
+        .logo-animated:hover {
+            transform: scale(1.05);
+            filter: drop-shadow(0 6px 16px rgba(255, 215, 0, 0.6));
         }
 
         @keyframes logoAppear {
             0% {
                 opacity: 0;
-                transform: scale(0.8);
+                transform: scale(0.8) translateY(-10px);
             }
             100% {
                 opacity: 1;
-                transform: scale(1);
+                transform: scale(1) translateY(0);
             }
         }
 
         .header-title {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
-
-        .header-title h1 {
-            font-size: 20px;
-            font-weight: 700;
-            background: linear-gradient(135deg, var(--color-dourado) 0%, #FFA500 100%);
+            font-size: 1.25rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .header-title p {
-            font-size: 11px;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        /* Navigation Tabs */
         .nav-tabs {
             display: flex;
             gap: 8px;
         }
 
-        .nav-tab {
+        .tab {
             padding: 8px 16px;
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .nav-tab:hover {
             background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--accent-blue);
             color: var(--text-primary);
+            transform: translateY(-2px);
         }
 
-        .nav-tab.active {
-            background: linear-gradient(135deg, var(--color-dourado) 0%, #FFA500 100%);
-            color: var(--bg-primary);
-            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.3);
+        .tab.active {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            border-color: transparent;
+            color: #1E2139;
+            font-weight: 600;
+            box-shadow: var(--shadow-sm);
         }
 
-        /* Date Filter */
-        .date-filter {
+        .date-picker-btn {
             display: flex;
             align-items: center;
             gap: 8px;
-        }
-
-        .date-filter input {
-            padding: 8px 12px;
-            background: var(--bg-secondary);
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border-color);
-            border-radius: 6px;
+            border-radius: 8px;
             color: var(--text-primary);
-            font-size: 13px;
-            width: 220px;
+            font-size: 0.875rem;
             cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .date-filter input:hover {
-            border-color: var(--color-blue);
-            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+        .date-picker-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: var(--shadow-sm);
         }
 
-        /* Main Layout */
-        .main-container {
-            max-width: 1920px;
+        /* ========================================
+           LAYOUT PRINCIPAL
+        ======================================== */
+        .main-layout {
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 16px;
+            padding: 16px 24px;
+            max-width: 1800px;
             margin: 0 auto;
-            padding: 20px;
-            display: flex;
-            gap: 20px;
-            height: calc(100vh - 80px);
-            overflow: hidden;
         }
 
-        /* Content Area (Esquerda + Centro) */
-        .content-area {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            overflow-y: auto;
-            padding-right: 10px;
-        }
-
-        /* Scrollbar Customizado */
-        .content-area::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        .content-area::-webkit-scrollbar-track {
-            background: var(--bg-secondary);
-            border-radius: 4px;
-        }
-
-        .content-area::-webkit-scrollbar-thumb {
-            background: var(--border-color);
-            border-radius: 4px;
-        }
-
-        .content-area::-webkit-scrollbar-thumb:hover {
-            background: var(--color-blue);
-        }
-
-        /* KPIs Section */
-        .kpis-section {
+        .content-main {
             display: flex;
             flex-direction: column;
             gap: 16px;
         }
 
-        .kpi-group {
-            display: grid;
-            gap: 12px;
-        }
-
-        .kpi-group.group-1 {
-            grid-template-columns: repeat(2, 1fr);
-        }
-
-        .kpi-group.group-2 {
-            grid-template-columns: repeat(4, 1fr);
-        }
-
-        .kpi-group.group-3 {
-            grid-template-columns: repeat(3, 1fr);
-        }
-
-        .kpi-card {
-            background: var(--bg-card);
-            padding: 16px;
-            border-radius: 12px;
-            border-top: 3px solid;
-            box-shadow: var(--shadow-lg);
-            transition: all 0.3s ease;
-            position: relative;
+        .sidebar-right {
+            position: sticky;
+            top: 76px;
+            height: calc(100vh - 92px);
             overflow: hidden;
         }
 
-        .kpi-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
-            transition: left 0.6s ease;
+        /* ========================================
+           SEÇÕES DE KPIs
+        ======================================== */
+        .kpi-section {
+            margin-bottom: 16px;
         }
 
-        .kpi-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-xl);
-        }
-
-        .kpi-card:hover::before {
-            left: 100%;
-        }
-
-        .kpi-card.blue { border-top-color: var(--color-blue); }
-        .kpi-card.purple { border-top-color: var(--color-purple); }
-        .kpi-card.green { border-top-color: var(--color-green); }
-        .kpi-card.yellow { border-top-color: var(--color-yellow); }
-        .kpi-card.orange { border-top-color: var(--color-orange); }
-        .kpi-card.red { border-top-color: var(--color-red); }
-        .kpi-card.cyan { border-top-color: var(--color-cyan); }
-        .kpi-card.vinho { border-top-color: var(--color-vinho); }
-        .kpi-card.dourado { border-top-color: var(--color-dourado); }
-
-        .kpi-card.highlight {
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.1) 0%, rgba(255, 165, 0, 0.05) 100%);
-            border: 2px solid var(--color-dourado);
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4);
-            }
-            50% {
-                box-shadow: 0 0 0 8px rgba(255, 215, 0, 0);
-            }
-        }
-
-        .kpi-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 8px;
-        }
-
-        .kpi-icon {
-            font-size: 20px;
-        }
-
-        .kpi-label {
-            font-size: 12px;
-            color: var(--text-secondary);
+        .section-title {
+            font-size: 0.875rem;
             font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        .kpi-value {
-            font-size: 28px;
-            font-weight: 700;
-            color: var(--text-primary);
+        .kpi-grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .kpi-grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .kpi-grid-4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .kpi-card-3d {
+            background: linear-gradient(145deg, var(--bg-card), #252945);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            box-shadow: var(--shadow-md), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            min-height: 100px;
+        }
+
+        .kpi-card-3d::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .kpi-card-3d:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+        }
+
+        .kpi-card-3d:hover::before {
+            opacity: 1;
+        }
+
+        .kpi-card-3d.accent-blue { border-top: 2px solid var(--accent-blue); }
+        .kpi-card-3d.accent-purple { border-top: 2px solid var(--accent-purple); }
+        .kpi-card-3d.accent-green { border-top: 2px solid var(--accent-green); }
+        .kpi-card-3d.accent-yellow { border-top: 2px solid var(--accent-yellow); }
+        .kpi-card-3d.accent-coral { border-top: 2px solid var(--accent-coral); }
+        .kpi-card-3d.accent-orange { border-top: 2px solid var(--accent-orange); }
+
+        .kpi-card-3d.highlight {
+            border: 2px solid var(--accent-yellow);
+            background: linear-gradient(145deg, rgba(245, 158, 11, 0.1), var(--bg-card));
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { box-shadow: var(--shadow-md), 0 0 0 0 rgba(245, 158, 11, 0.4); }
+            50% { box-shadow: var(--shadow-lg), 0 0 0 8px rgba(245, 158, 11, 0); }
+        }
+
+        .kpi-icon {
+            font-size: 1.5rem;
+            margin-bottom: 6px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+
+        .kpi-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 500;
             margin-bottom: 4px;
         }
 
-        .kpi-subtitle {
-            font-size: 11px;
+        .kpi-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .kpi-value.large {
+            font-size: 2rem;
+        }
+
+        .kpi-sublabel {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .kpi-sublabel.success {
+            color: var(--accent-green);
+            font-weight: 600;
+        }
+
+        .kpi-breakdown {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .kpi-breakdown span {
             color: var(--text-secondary);
         }
 
-        /* Rankings Section */
-        .rankings-grid {
+        /* ========================================
+           RANKINGS
+        ======================================== */
+        .rankings-grid-2 {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 16px;
         }
 
-        .ranking-card {
-            background: var(--bg-card);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: var(--shadow-lg);
+        .ranking-card-3d {
+            background: linear-gradient(145deg, var(--bg-card), #252945);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: var(--shadow-md), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
         }
 
-        .ranking-title {
-            font-size: 16px;
-            font-weight: 700;
-            margin-bottom: 16px;
-            color: var(--color-dourado);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .ranking-card-3d.sidebar-full {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ranking-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .ranking-header h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .ranking-count {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .ranking-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .ranking-list.scrollable {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .ranking-list.scrollable::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .ranking-list.scrollable::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 2px;
+        }
+
+        .ranking-list.scrollable::-webkit-scrollbar-thumb {
+            background: var(--accent-blue);
+            border-radius: 2px;
         }
 
         .ranking-item {
-            display: flex;
+            display: grid;
+            grid-template-columns: 32px 1fr auto 40px;
             align-items: center;
-            justify-content: space-between;
-            padding: 12px;
-            margin-bottom: 8px;
-            background: var(--bg-secondary);
+            gap: 8px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid transparent;
             border-radius: 8px;
             transition: all 0.3s ease;
             position: relative;
         }
 
         .ranking-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            border-color: var(--border-color);
             transform: translateX(4px);
-            background: rgba(74, 144, 226, 0.1);
         }
 
-        .ranking-position {
-            font-size: 14px;
+        .ranking-item .position {
+            font-size: 0.875rem;
             font-weight: 700;
-            color: var(--text-secondary);
-            min-width: 30px;
+            color: var(--text-muted);
+            text-align: center;
         }
 
-        .ranking-info {
-            flex: 1;
-            margin-left: 12px;
+        .ranking-item.top-1 .position {
+            color: #FFD700;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.5);
         }
 
-        .ranking-name {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 4px;
+        .ranking-item.top-2 .position {
+            color: #C0C0C0;
+            text-shadow: 0 0 8px rgba(192, 192, 192, 0.5);
         }
 
-        .ranking-metrics {
-            font-size: 11px;
-            color: var(--text-secondary);
-            font-weight: 500;
+        .ranking-item.top-3 .position {
+            color: #CD7F32;
+            text-shadow: 0 0 8px rgba(205, 127, 50, 0.5);
         }
 
-        .ranking-score {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .ranking-ray {
-            width: 30px;
-            height: 2px;
-            background: linear-gradient(90deg, var(--color-blue), transparent);
-            animation: rayPulse 2s ease-in-out infinite;
-        }
-
-        @keyframes rayPulse {
-            0%, 100% {
-                opacity: 0.5;
-                transform: scaleX(0.8);
-            }
-            50% {
-                opacity: 1;
-                transform: scaleX(1);
-            }
-        }
-
-        /* Top 3 Badges */
-        .badge {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        .badge-gold {
-            background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-            color: #000;
-            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.4);
-        }
-
-        .badge-silver {
-            background: linear-gradient(135deg, #C0C0C0 0%, #A8A8A8 100%);
-            color: #000;
-            box-shadow: 0 2px 8px rgba(192, 192, 192, 0.4);
-        }
-
-        .badge-bronze {
-            background: linear-gradient(135deg, #CD7F32 0%, #B87333 100%);
-            color: #FFF;
-            box-shadow: 0 2px 8px rgba(205, 127, 50, 0.4);
-        }
-
-        /* Sidebar Direita */
-        .sidebar-right {
-            width: 280px;
-            background: var(--bg-card);
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: var(--shadow-lg);
-            position: sticky;
-            top: 80px;
-            height: calc(100vh - 100px);
+        .name-section {
             display: flex;
             flex-direction: column;
+            gap: 2px;
         }
 
-        .sidebar-title {
-            font-size: 14px;
+        .name {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .stats-inline {
+            display: flex;
+            gap: 4px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .stat-item {
+            color: var(--text-secondary);
+        }
+
+        .separator {
+            color: var(--border-color);
+        }
+
+        .score {
+            font-size: 0.875rem;
             font-weight: 700;
-            margin-bottom: 16px;
-            color: var(--color-dourado);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            color: var(--accent-blue);
         }
 
-        .sidebar-ranking {
-            flex: 1;
-            overflow-y: auto;
-            padding-right: 8px;
+        .badge-ray {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .sidebar-ranking::-webkit-scrollbar {
-            width: 6px;
+        .badge {
+            font-size: 0.75rem;
         }
 
-        .sidebar-ranking::-webkit-scrollbar-track {
-            background: var(--bg-secondary);
-            border-radius: 3px;
-        }
-
-        .sidebar-ranking::-webkit-scrollbar-thumb {
-            background: var(--border-color);
-            border-radius: 3px;
-        }
-
-        .sidebar-ranking::-webkit-scrollbar-thumb:hover {
-            background: var(--color-blue);
-        }
-
-        .sidebar-item {
-            padding: 10px;
-            margin-bottom: 8px;
-            background: var(--bg-secondary);
-            border-radius: 8px;
+        .ray {
+            position: absolute;
+            right: -8px;
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-blue) 0%, transparent 100%);
+            opacity: 0;
             transition: all 0.3s ease;
         }
 
-        .sidebar-item:hover {
-            background: rgba(74, 144, 226, 0.1);
+        .ranking-item:hover .ray {
+            opacity: 0.6;
+            width: 60px;
         }
 
-        .sidebar-item-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 6px;
-        }
-
-        .sidebar-item-position {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--text-secondary);
-        }
-
-        .sidebar-item-name {
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .sidebar-item-score {
-            font-size: 14px;
-            font-weight: 700;
-            color: var(--color-blue);
-        }
-
-        .sidebar-item-metrics {
-            font-size: 10px;
-            color: var(--text-secondary);
-        }
-
-        /* Responsive */
+        /* ========================================
+           RESPONSIVO
+        ======================================== */
         @media (max-width: 1400px) {
-            .main-container {
-                flex-direction: column;
-                height: auto;
-                overflow-y: auto;
+            .main-layout {
+                grid-template-columns: 1fr;
             }
-
+            
             .sidebar-right {
-                width: 100%;
                 position: static;
                 height: auto;
-                max-height: 500px;
+            }
+            
+            .sidebar-full .ranking-list.scrollable {
+                max-height: 400px;
+            }
+
+            .kpi-grid-4 {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
         @media (max-width: 768px) {
-            .header-content {
-                flex-wrap: wrap;
+            .header {
+                flex-direction: column;
                 height: auto;
-                padding: 10px;
-            }
-
-            .logo-section {
-                width: 100%;
-                justify-content: center;
-                margin-bottom: 10px;
+                padding: 12px;
+                gap: 12px;
             }
 
             .nav-tabs {
-                width: 100%;
-                justify-content: center;
                 flex-wrap: wrap;
-            }
-
-            .date-filter {
-                width: 100%;
                 justify-content: center;
-                margin-top: 10px;
             }
 
-            .kpi-group.group-1,
-            .kpi-group.group-2,
-            .kpi-group.group-3 {
+            .kpi-grid-2,
+            .kpi-grid-3,
+            .kpi-grid-4 {
                 grid-template-columns: 1fr;
             }
 
-            .rankings-grid {
+            .rankings-grid-2 {
                 grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header>
-        <div class="header-content">
-            <div class="logo-section">
-                <img src="https://www.genspark.ai/api/files/s/QORAK1K0?cache_control=3600" alt="Logo Time GARRA" class="logo">
-                <div class="header-title">
-                    <h1>Dashboard Equipe GARRA</h1>
-                    <p>Sistema de Gestão de Vendas - Metrocasa</p>
-                </div>
-            </div>
-
-            <nav class="nav-tabs">
-                <button class="nav-tab active" onclick="navigateTo('geral')">Geral</button>
-                <button class="nav-tab" onclick="navigateTo('superintendentes')">Superintendentes</button>
-                <button class="nav-tab" onclick="navigateTo('gerentes')">Gerentes</button>
-                <button class="nav-tab" onclick="navigateTo('corretores')">Corretores</button>
-                <button class="nav-tab" onclick="navigateTo('comparativo')">Comparativo</button>
-            </nav>
-
-            <div class="date-filter">
-                <input type="text" id="datePicker" placeholder="Selecione o período">
-            </div>
+    <!-- ========================================
+         HEADER
+    ======================================== -->
+    <header class="header">
+        <div class="header-left">
+            <img src="https://www.genspark.ai/api/files/s/QORAK1K0?cache_control=3600" 
+                 alt="Logo Time GARRA" 
+                 class="logo-animated">
+            <h1 class="header-title">Dashboard Equipe GARRA</h1>
+        </div>
+        
+        <nav class="nav-tabs">
+            <button class="tab active">Geral</button>
+            <button class="tab">Superintendentes</button>
+            <button class="tab">Gerentes</button>
+            <button class="tab">Corretores</button>
+            <button class="tab">Comparativo</button>
+        </nav>
+        
+        <div class="header-right">
+            <input type="text" id="datePicker" class="date-picker-btn" placeholder="📅 Últimos 30 dias" readonly>
         </div>
     </header>
 
-    <!-- Main Container -->
-    <div class="main-container">
-        <!-- Content Area (Esquerda + Centro) -->
-        <div class="content-area">
-            <!-- KPIs Section -->
-            <div class="kpis-section">
-                <!-- Grupo 1: Equipe + Entrevistas -->
-                <div class="kpi-group group-1">
-                    <div class="kpi-card blue">
-                        <div class="kpi-header">
-                            <span class="kpi-icon">👥</span>
-                            <span class="kpi-label">Equipe Total</span>
+    <!-- ========================================
+         LAYOUT PRINCIPAL
+    ======================================== -->
+    <div class="main-layout">
+        <!-- ÁREA CENTRAL -->
+        <div class="content-main">
+            
+            <!-- GRUPO 1: EQUIPE & RH -->
+            <div class="kpi-section">
+                <h3 class="section-title">👥 Equipe & RH</h3>
+                <div class="kpi-grid-2">
+                    <div class="kpi-card-3d accent-blue">
+                        <div class="kpi-icon">👥</div>
+                        <div class="kpi-label">Equipe Total</div>
+                        <div class="kpi-value large">158</div>
+                        <div class="kpi-breakdown">
+                            <span>4 Sup</span> • <span>12 Ger</span> • <span>142 Cor</span>
                         </div>
-                        <div class="kpi-value">158</div>
-                        <div class="kpi-subtitle">4 Sup • 12 Ger • 142 Cor</div>
                     </div>
-
-                    <div class="kpi-card purple">
-                        <div class="kpi-header">
-                            <span class="kpi-icon">📋</span>
-                            <span class="kpi-label">Entrevistas</span>
-                        </div>
-                        <div class="kpi-value">28</div>
-                        <div class="kpi-subtitle">22 realizadas • +15% vs. mês anterior</div>
+                    
+                    <div class="kpi-card-3d accent-green">
+                        <div class="kpi-icon">📋</div>
+                        <div class="kpi-label">Entrevistas</div>
+                        <div class="kpi-value large">28</div>
+                        <div class="kpi-sublabel success">+15% vs mês anterior</div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Grupo 2: Funil Leads → Visitas -->
-                <div class="kpi-group group-2">
-                    <div class="kpi-card green">
-                        <div class="kpi-header">
-                            <span class="kpi-icon">🎯</span>
-                            <span class="kpi-label">Leads Novos</span>
-                        </div>
+            <!-- GRUPO 2: FUNIL LEADS → VISITAS -->
+            <div class="kpi-section">
+                <h3 class="section-title">📊 Funil de Vendas: Leads → Visitas</h3>
+                <div class="kpi-grid-4">
+                    <div class="kpi-card-3d accent-blue">
+                        <div class="kpi-icon">🎯</div>
+                        <div class="kpi-label">Leads Novos</div>
                         <div class="kpi-value">1.245</div>
-                        <div class="kpi-subtitle">Novos contatos captados</div>
                     </div>
-
-                    <div class="kpi-card yellow">
-                        <div class="kpi-header">
-                            <span class="kpi-icon">📅</span>
-                            <span class="kpi-label">Agendamentos</span>
-                        </div>
+                    
+                    <div class="kpi-card-3d accent-purple">
+                        <div class="kpi-icon">📅</div>
+                        <div class="kpi-label">Agendamentos</div>
                         <div class="kpi-value">856</div>
-                        <div class="kpi-subtitle">68.7% dos leads converteram</div>
+                        <div class="kpi-sublabel">68.7% dos leads</div>
                     </div>
-
-                    <div class="kpi-card highlight dourado">
-                        <div class="kpi-header">
-                            <span class="kpi-icon">📊</span>
-                            <span class="kpi-label">Para vir 1 Visita</span>
-                        </div>
-                        <div class="kpi-value">1.6</div>
-                        <div class="kpi-subtitle">Agendamentos necessários</div>
+                    
+                    <div class="kpi-card-3d accent-yellow highlight">
+                        <div class="kpi-icon">🔄</div>
+                        <div class="kpi-label">Para vir 1 Visita</div>
+                        <div class="kpi-value large">1.6</div>
+                        <div class="kpi-sublabel">agendamentos</div>
                     </div>
-
-                    <div class="kpi-card orange">
-                        <div class="kpi-header">
-                            <span class="kpi-icon">🏠</span>
-                            <span class="kpi-label">Visitas</span>
-                        </div>
+                    
+                    <div class="kpi-card-3d accent-green">
+                        <div class="kpi-icon">🏠</div>
+                        <div class="kpi-label">Visitas</div>
                         <div class="kpi-value">542</div>
-                        <div class="kpi-subtitle">63.3% dos agendados vieram</div>
+                        <div class="kpi-sublabel">63.3% dos agendados</div>
                     </div>
                 </div>
+            </div>
 
-                <!-- Grupo 3: Conversão & Vendas -->
-                <div class="kpi-group group-3">
-                    <div class="kpi-card highlight vinho">
-                        <div class="kpi-header">
-                            <span class="kpi-icon">📈</span>
-                            <span class="kpi-label">Para 1 Pré-Venda</span>
-                        </div>
-                        <div class="kpi-value">6.1</div>
-                        <div class="kpi-subtitle">Visitas necessárias</div>
+            <!-- GRUPO 3: CONVERSÃO & VENDAS -->
+            <div class="kpi-section">
+                <h3 class="section-title">💎 Conversão & Vendas</h3>
+                <div class="kpi-grid-3">
+                    <div class="kpi-card-3d accent-yellow highlight">
+                        <div class="kpi-icon">🔄</div>
+                        <div class="kpi-label">Para 1 Pré-Venda</div>
+                        <div class="kpi-value large">6.1</div>
+                        <div class="kpi-sublabel">visitas necessárias</div>
                     </div>
-
-                    <div class="kpi-card red">
-                        <div class="kpi-header">
-                            <span class="kpi-icon">💎</span>
-                            <span class="kpi-label">Pré-Vendas</span>
-                        </div>
+                    
+                    <div class="kpi-card-3d accent-orange">
+                        <div class="kpi-icon">💎</div>
+                        <div class="kpi-label">Pré-Vendas</div>
                         <div class="kpi-value">89</div>
-                        <div class="kpi-subtitle">16.4% das visitas converteram</div>
                     </div>
-
-                    <div class="kpi-card cyan">
-                        <div class="kpi-header">
-                            <span class="kpi-icon">📝</span>
-                            <span class="kpi-label">Propostas</span>
-                        </div>
+                    
+                    <div class="kpi-card-3d accent-coral">
+                        <div class="kpi-icon">📝</div>
+                        <div class="kpi-label">Propostas</div>
                         <div class="kpi-value">67</div>
-                        <div class="kpi-subtitle">75.3% das pré-vendas fecharam</div>
+                        <div class="kpi-sublabel">75.3% das pré-vendas</div>
                     </div>
                 </div>
             </div>
 
-            <!-- Rankings Grid (2 colunas) -->
-            <div class="rankings-grid">
+            <!-- RANKINGS SUPERINTENDENTES + GERENTES -->
+            <div class="rankings-grid-2">
                 <!-- Ranking Superintendentes -->
-                <div class="ranking-card">
-                    <h3 class="ranking-title">🏆 Superintendentes</h3>
-                    <div id="rankingSuperintendentes"></div>
+                <div class="ranking-card-3d">
+                    <div class="ranking-header">
+                        <h3>🏆 Superintendentes</h3>
+                        <span class="ranking-count">4</span>
+                    </div>
+                    <div class="ranking-list" id="ranking-superintendentes"></div>
                 </div>
-
-                <!-- Ranking Gerentes -->
-                <div class="ranking-card">
-                    <h3 class="ranking-title">🥇 Top 5 Gerentes</h3>
-                    <div id="rankingGerentes"></div>
+                
+                <!-- Ranking Gerentes TOP 5 -->
+                <div class="ranking-card-3d">
+                    <div class="ranking-header">
+                        <h3>🥇 Gerentes</h3>
+                        <span class="ranking-count">TOP 5</span>
+                    </div>
+                    <div class="ranking-list" id="ranking-gerentes"></div>
                 </div>
             </div>
+            
         </div>
 
-        <!-- Sidebar Direita: Ranking Corretores TOP 10 -->
+        <!-- SIDEBAR DIREITA: RANKING CORRETORES TOP 10 -->
         <aside class="sidebar-right">
-            <h3 class="sidebar-title">🌟 Top 10 Corretores</h3>
-            <div class="sidebar-ranking" id="rankingCorretores"></div>
+            <div class="ranking-card-3d sidebar-full">
+                <div class="ranking-header">
+                    <h3>🌟 Corretores</h3>
+                    <span class="ranking-count">TOP 10</span>
+                </div>
+                <div class="ranking-list scrollable" id="ranking-corretores"></div>
+            </div>
         </aside>
     </div>
 
@@ -741,23 +690,9 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
 
     <script>
-        console.log('🏆 Dashboard Equipe GARRA v4.2 iniciado');
-
-        // Configurar Flatpickr
-        flatpickr("#datePicker", {
-            mode: "range",
-            dateFormat: "d/m/Y",
-            locale: "pt",
-            defaultDate: [
-                new Date(new Date().setDate(new Date().getDate() - 30)),
-                new Date()
-            ],
-            onChange: function(selectedDates, dateStr, instance) {
-                console.log('📅 Período selecionado:', dateStr);
-            }
-        });
-
-        // Dados fictícios estruturados
+        // ========================================
+        // DADOS FICTÍCIOS
+        // ========================================
         const DADOS = {
             superintendentes: [
                 { nome: 'ARTHUR', leads: 450, agend: 280, visitas: 180, pre: 45, prop: 30 },
@@ -765,6 +700,7 @@
                 { nome: 'FELIX', leads: 320, agend: 210, visitas: 140, pre: 32, prop: 20 },
                 { nome: 'BERNARDO', leads: 290, agend: 190, visitas: 120, pre: 28, prop: 18 }
             ],
+            
             gerentes: [
                 { nome: 'PEDRO COSTA', leads: 180, agend: 120, visitas: 80, pre: 20, prop: 15 },
                 { nome: 'ANA SILVA', leads: 165, agend: 110, visitas: 75, pre: 18, prop: 13 },
@@ -772,124 +708,118 @@
                 { nome: 'MARIA SANTOS', leads: 145, agend: 95, visitas: 68, pre: 15, prop: 11 },
                 { nome: 'JOÃO OLIVEIRA', leads: 140, agend: 90, visitas: 65, pre: 14, prop: 10 }
             ],
+            
             corretores: []
         };
 
-        // Gerar 142 corretores dinamicamente
-        const nomesPrimeiros = ['João', 'Maria', 'Pedro', 'Ana', 'Carlos', 'Julia', 'Lucas', 'Paula', 'Rafael', 'Fernanda', 
-                                'Bruno', 'Camila', 'Diego', 'Isabela', 'Gustavo', 'Letícia', 'Felipe', 'Mariana', 'Thiago', 'Amanda'];
-        const nomesSegundos = ['Silva', 'Santos', 'Costa', 'Oliveira', 'Souza', 'Lima', 'Pereira', 'Ferreira', 'Rodrigues', 'Alves',
-                               'Nascimento', 'Carvalho', 'Araújo', 'Ribeiro', 'Martins', 'Rocha', 'Dias', 'Castro', 'Gomes', 'Barbosa'];
-
+        // Gerar 142 corretores
+        const nomes = ['HERCULES', 'BRAGA', 'ANA COSTA', 'JOÃO S.', 'MARIA L.', 'CARLOS M.', 
+                       'PAULA R.', 'PEDRO A.', 'JULIA F.', 'LUCAS V.', 'RAFAEL D.', 'ISABELA M.',
+                       'FERNANDO L.', 'RICARDO A.', 'AMANDA S.', 'BRUNO C.', 'CAMILA P.', 'DIEGO R.'];
+        
         for (let i = 0; i < 142; i++) {
-            const primeiro = nomesPrimeiros[Math.floor(Math.random() * nomesPrimeiros.length)];
-            const segundo = nomesSegundos[Math.floor(Math.random() * nomesSegundos.length)];
+            const baseLeads = 45 - Math.floor(i * 0.3);
+            const baseAgend = Math.floor(baseLeads * (0.65 + Math.random() * 0.15));
+            const baseVisitas = Math.floor(baseAgend * (0.6 + Math.random() * 0.2));
             
             DADOS.corretores.push({
-                nome: `${primeiro} ${segundo}`,
-                leads: Math.floor(Math.random() * 40) + 20,
-                agend: Math.floor(Math.random() * 30) + 15,
-                visitas: Math.floor(Math.random() * 25) + 10,
-                pre: Math.floor(Math.random() * 8) + 2,
-                prop: Math.floor(Math.random() * 5) + 1
+                nome: i < nomes.length ? nomes[i] : `CORRETOR ${i + 1}`,
+                leads: Math.max(10, baseLeads + Math.floor(Math.random() * 10 - 5)),
+                agend: Math.max(5, baseAgend + Math.floor(Math.random() * 8 - 4)),
+                visitas: Math.max(3, baseVisitas + Math.floor(Math.random() * 6 - 3)),
+                pre: Math.floor(Math.random() * 5 + 2),
+                prop: Math.floor(Math.random() * 3 + 1)
             });
         }
 
-        // Função para calcular performance combinada
+        // ========================================
+        // FUNÇÕES
+        // ========================================
         function calcularPerformance(agend, visitas) {
             return (agend * 1) + (visitas * 2);
         }
 
-        // Renderizar ranking com badges para TOP 3
-        function renderRanking(data, containerId) {
+        function ordenarPorPerformance(lista) {
+            return [...lista].sort((a, b) => {
+                const scoreA = calcularPerformance(a.agend, a.visitas);
+                const scoreB = calcularPerformance(b.agend, b.visitas);
+                return scoreB - scoreA;
+            });
+        }
+
+        function getBadge(index) {
+            if (index === 0) return '🟢';
+            if (index === 1) return '🟢';
+            return '🟡';
+        }
+
+        function renderRanking(dados, containerId, limite = null) {
             const container = document.getElementById(containerId);
+            const dadosOrdenados = ordenarPorPerformance(dados);
+            const dadosExibir = limite ? dadosOrdenados.slice(0, limite) : dadosOrdenados;
             
-            // Ordenar por performance
-            const sorted = [...data].sort((a, b) => {
-                const scoreA = calcularPerformance(a.agend, a.visitas);
-                const scoreB = calcularPerformance(b.agend, b.visitas);
-                return scoreB - scoreA;
-            });
-
-            container.innerHTML = sorted.map((item, index) => {
+            let html = '';
+            dadosExibir.forEach((item, index) => {
+                const posicao = index + 1;
                 const score = calcularPerformance(item.agend, item.visitas);
-                const position = index + 1;
+                const classePos = index < 3 ? `top-${index + 1}` : '';
                 
-                let badge = '';
-                if (position === 1) badge = '<span class="badge badge-gold">🥇 1º</span>';
-                else if (position === 2) badge = '<span class="badge badge-silver">🥈 2º</span>';
-                else if (position === 3) badge = '<span class="badge badge-bronze">🥉 3º</span>';
-                else badge = `<span class="ranking-position">${position}º</span>`;
-
-                return `
-                    <div class="ranking-item">
-                        ${badge}
-                        <div class="ranking-info">
-                            <div class="ranking-name">${item.nome}</div>
-                            <div class="ranking-metrics">${item.leads} L | ${item.agend} A | ${item.visitas} V</div>
+                html += `
+                    <div class="ranking-item ${classePos}">
+                        <span class="position">${posicao}º</span>
+                        <div class="name-section">
+                            <span class="name">${item.nome}</span>
+                            <div class="stats-inline">
+                                <span class="stat-item">${item.leads} L</span>
+                                <span class="separator">|</span>
+                                <span class="stat-item">${item.agend} A</span>
+                                <span class="separator">|</span>
+                                <span class="stat-item">${item.visitas} V</span>
+                            </div>
                         </div>
-                        <div class="ranking-score">
-                            ${score}
-                            <div class="ranking-ray"></div>
+                        <span class="score">${score}</span>
+                        <div class="badge-ray">
+                            <span class="badge">${getBadge(index)}</span>
+                            <div class="ray"></div>
                         </div>
                     </div>
                 `;
-            }).join('');
-        }
-
-        // Renderizar sidebar de corretores TOP 10
-        function renderSidebarCorretores() {
-            const container = document.getElementById('rankingCorretores');
-            
-            const sorted = [...DADOS.corretores].sort((a, b) => {
-                const scoreA = calcularPerformance(a.agend, a.visitas);
-                const scoreB = calcularPerformance(b.agend, b.visitas);
-                return scoreB - scoreA;
-            }).slice(0, 10);
-
-            container.innerHTML = sorted.map((item, index) => {
-                const score = calcularPerformance(item.agend, item.visitas);
-                const position = index + 1;
-                
-                let badge = '';
-                if (position === 1) badge = '🥇';
-                else if (position === 2) badge = '🥈';
-                else if (position === 3) badge = '🥉';
-
-                return `
-                    <div class="sidebar-item">
-                        <div class="sidebar-item-header">
-                            <span class="sidebar-item-position">${badge} ${position}º</span>
-                            <span class="sidebar-item-score">${score}</span>
-                        </div>
-                        <div class="sidebar-item-name">${item.nome}</div>
-                        <div class="sidebar-item-metrics">${item.leads} L | ${item.agend} A | ${item.visitas} V</div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // Navegação entre páginas
-        function navigateTo(page) {
-            console.log('📄 Navegando para:', page);
-            
-            // Atualizar abas ativas
-            document.querySelectorAll('.nav-tab').forEach(tab => {
-                tab.classList.remove('active');
             });
-            event.target.classList.add('active');
-
-            // Implementar navegação (placeholder)
-            alert(`Navegação para página "${page}" será implementada nas próximas fases.`);
+            
+            container.innerHTML = html;
         }
 
-        // Inicializar
-        renderRanking(DADOS.superintendentes, 'rankingSuperintendentes');
-        renderRanking(DADOS.gerentes, 'rankingGerentes');
-        renderSidebarCorretores();
-
-        console.log('✅ Dashboard carregado com sucesso!');
-        console.log('📊 Total de corretores:', DADOS.corretores.length);
+        // ========================================
+        // INICIALIZAÇÃO
+        // ========================================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Renderizar rankings
+            renderRanking(DADOS.superintendentes, 'ranking-superintendentes');
+            renderRanking(DADOS.gerentes, 'ranking-gerentes', 5);
+            renderRanking(DADOS.corretores, 'ranking-corretores', 10);
+            
+            // Inicializar Flatpickr
+            flatpickr("#datePicker", {
+                mode: "range",
+                dateFormat: "d/m/Y",
+                locale: "pt",
+                defaultDate: [
+                    new Date(Date.now() - 30 * 24 * 60 * 60 * 1000),
+                    new Date()
+                ],
+                onChange: function(selectedDates, dateStr) {
+                    if (selectedDates.length === 2) {
+                        const start = selectedDates[0].toLocaleDateString('pt-BR');
+                        const end = selectedDates[1].toLocaleDateString('pt-BR');
+                        document.getElementById('datePicker').value = `${start} - ${end}`;
+                    }
+                }
+            });
+            
+            console.log('🏆 Dashboard Equipe GARRA v4.2 iniciado');
+            console.log('✅ Dashboard carregado com sucesso!');
+            console.log('📊 Total de corretores:', DADOS.corretores.length);
+        });
     </script>
 </body>
 </html>
